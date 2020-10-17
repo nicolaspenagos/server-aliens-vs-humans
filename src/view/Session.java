@@ -68,6 +68,27 @@ public class Session extends Thread{
 		
 	}
 
+	public void sendMessage(String msg){
+
+        new Thread(
+
+                ()->{
+                    
+                    try {
+
+                        writer.write(msg+"\n");
+                        writer.flush();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    
+                }
+
+        ).start();
+
+    }
+	
 	// -------------------------------------
 	// Getters and setters
 	// -------------------------------------

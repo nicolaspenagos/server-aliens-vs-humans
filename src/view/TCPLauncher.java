@@ -23,7 +23,7 @@ public class TCPLauncher extends Thread{
 	// -------------------------------------
     // Global variables
     // -------------------------------------
-	public static TCPLauncher instance; //Unique Instance 
+	private static TCPLauncher instance; //Unique Instance 
 	private OnMessageListener observer;
 	private ServerSocket serverSocket;
 	private Session session1;
