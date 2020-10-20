@@ -54,7 +54,8 @@ public class AlliensVsHumans extends PApplet implements OnMessageListener {
 	@Override
 	public void OnMessage(String msg) {
 		// TODO Auto-generated method stub
-
+		System.out.println(msg);
+		tcp.getSession1().sendMessage("Hi back");
 	}
 
 }
