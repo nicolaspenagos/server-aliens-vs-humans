@@ -19,6 +19,7 @@ public abstract class Character extends GameElement{
 	private int lives;
 	private int sprite;
 	private boolean isAlive;
+	private int cost;
 	
 	// -------------------------------------
 	// Constructor
@@ -27,12 +28,13 @@ public abstract class Character extends GameElement{
 		
 	}
 	
-	public Character(int posX, int posY, boolean movement, String image, int lives, int sprite, boolean isAlive) {
+	public Character(int posX, int posY, boolean movement, String image, int lives, int sprite, boolean isAlive, int cost) {
 		
 		super(posX, posY, movement, image);
 		this.lives = lives;
 		this.sprite = sprite;
 		this.isAlive = isAlive;
+		this.cost = cost;
 		
 	}
 	
@@ -66,6 +68,14 @@ public abstract class Character extends GameElement{
 	
 	public void setAlive(boolean isAlive) {
 		this.isAlive = isAlive;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 	
 }

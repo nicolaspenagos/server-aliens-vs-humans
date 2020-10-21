@@ -26,9 +26,9 @@ public class Shooter extends Character{
 		
 	}
 	
-	public Shooter(int posX, int posY, boolean movement, String image, int lives, int sprite, boolean isAlive, char direction, int rateOfFire) {
+	public Shooter(int posX, int posY, boolean movement, String image, int lives, int sprite, boolean isAlive, int cost, char direction, int rateOfFire) {
 		
-		super(posX, posY, movement, image, lives, sprite, isAlive);
+		super(posX, posY, movement, image, lives, sprite, isAlive, cost);
 		this.direction = direction;
 		this.rateOfFire = rateOfFire;
 		

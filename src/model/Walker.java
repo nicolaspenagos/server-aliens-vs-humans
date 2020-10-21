@@ -26,9 +26,9 @@ public class Walker extends Character{
 		
 	}
 	
-	public Walker(int posX, int posY, boolean movement, String image, int lives, int sprite, boolean isAlive, char direction, int damage) {
+	public Walker(int posX, int posY, boolean movement, String image, int lives, int sprite, boolean isAlive, int cost, char direction, int damage) {
 		
-		super(posX, posY, movement, image, lives, sprite, isAlive);
+		super(posX, posY, movement, image, lives, sprite, isAlive, cost);
 		this.direction = direction;
 		this.damage = damage;
 		
