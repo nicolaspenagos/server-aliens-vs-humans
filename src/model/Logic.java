@@ -41,14 +41,14 @@ public class Logic {
 		gameBoard = new int[5][9];
 		
 		player1 = new Player(Player.PLAYER1);
-		player2 = new Player(Player.PLAYER2);
+		setPlayer2(new Player(Player.PLAYER2));
 				
 	}
 
 	// -------------------------------------
 	// Methods
 	// -------------------------------------
-	public Coordinate fromMatrixToCoordinate(int i, int j) {
+	public Coordinate fromMatrixToCoordinate(int j, int i) {
 		
 		int x = 229 + (j*MATRIX_SQUARE_SIZE) + (j*COLUMN_GAP);
 		int y = 179 + (i*MATRIX_SQUARE_SIZE) + (i*ROW_GAP);
@@ -59,10 +59,31 @@ public class Logic {
 	
 	public void playerMove(int player, Direction direction) {
 		
+		Coordinate toConvert, converted;
+		
 		if(player == Player.PLAYER1) {
+			
 			player1.updatePos(direction.getDirection());
+			
+			toConvert = player1.getCurrentPos();
+			converted = fromMatrixToCoordinate(toConvert.getX(), toConvert.getY());
+			converted.setX(converted.getX()-22);
+			converted.setY(converted.getY()-22);
+			
+			player1.setDrawPos(converted);
+			
+			
 		}else if(player == Player.PLAYER2) {
-			player2.updatePos(direction.getDirection());
+			
+			getPlayer2().updatePos(direction.getDirection());
+			
+			toConvert = getPlayer2().getCurrentPos();
+			converted = fromMatrixToCoordinate(toConvert.getX(), toConvert.getY());
+			converted.setX(converted.getX()-22);
+			converted.setY(converted.getY()-22);
+			
+			getPlayer2().setDrawPos(converted);
+			
 		}
 		
 	}
@@ -84,6 +105,14 @@ public class Logic {
 
 	public void setPlayer1(Player player1) {
 		this.player1 = player1;
+	}
+
+	public Player getPlayer2() {
+		return player2;
+	}
+
+	public void setPlayer2(Player player2) {
+		this.player2 = player2;
 	}	
 
 }

@@ -10,6 +10,7 @@ package events;
 
 public interface OnMessageListener {
 
-	public void OnMessage(String msg);
+	public void OnMessageP1(String msg);
+	public void OnMessageP2(String msg);
 	
 }

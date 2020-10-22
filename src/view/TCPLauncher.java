@@ -62,16 +62,24 @@ public class TCPLauncher extends Thread{
 			while(!killThread) {
 				
 				Socket socket = serverSocket.accept();
+				Session session;
 				
-				Session session = new Session(socket);
-				session.setObserver(observer);
-				session.start();
-				
-				if(session1 == null)
+				if(session1 == null) {
+					
+					session = new Session(socket, 1);
 					session1 = session;
-				else if(session2 == null) 
+					session.setObserver(observer);
+					session.start();
+					
+				}else if(session2 == null) {
+					
+					session = new Session(socket, 2);
 					session2 = session;
-				
+					session.setObserver(observer);
+					session.start();
+					
+				}
+			
 			}
 			
 		}catch(IOException e) {

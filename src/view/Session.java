@@ -31,14 +31,16 @@ public class Session extends Thread{
 	private Socket socket;
 	private OnMessageListener observer;
 	private boolean killThread;
+	private int sessionNumber;
 
 	// -------------------------------------
 	// Constructor
 	// -------------------------------------
-	public Session(Socket socket) {
+	public Session(Socket socket, int sessionNumber) {
 
 		this.socket = socket;
 		this.ID = UUID.randomUUID().toString();
+		this.setSessionNumber(sessionNumber);
 		
 	}
 	
@@ -57,8 +59,11 @@ public class Session extends Thread{
 			while(!killThread) {
 				
 				String msg = reader.readLine();
-				observer.OnMessage(msg);
-				System.out.println(msg);
+				if(sessionNumber == 1)
+					observer.OnMessageP1(msg);
+				else if(sessionNumber == 2)
+					observer.OnMessageP2(msg);
+				
 			}
 			
 		} catch (IOException e) {
@@ -130,6 +135,14 @@ public class Session extends Thread{
 
 	public void setKillThread(boolean killThread) {
 		this.killThread = killThread;
+	}
+
+	public int getSessionNumber() {
+		return sessionNumber;
+	}
+
+	public void setSessionNumber(int sessionNumber) {
+		this.sessionNumber = sessionNumber;
 	}
 
 }

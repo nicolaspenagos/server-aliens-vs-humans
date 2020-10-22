@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import events.OnMessageListener;
 import tcpmodel.Direction;
 import tcpmodel.Generic;
+import model.Coordinate;
 import model.Logic;
 import model.Player;
 import processing.core.PApplet;
@@ -35,6 +36,8 @@ public class AlliensVsHumans extends PApplet implements OnMessageListener {
 	// -------------------------------------
 	private PImage intro_background;
 	private PImage game_background;
+	private PImage humans_feedback_shadow;
+	private PImage aliens_feedback_shadow;
 
 	// -------------------------------------
 	// Main method
@@ -63,11 +66,22 @@ public class AlliensVsHumans extends PApplet implements OnMessageListener {
 
 		// Load images
 		game_background = loadImage("images/game_background.png");
+		humans_feedback_shadow = loadImage("images/humans_feedback_shadow.png");
+		aliens_feedback_shadow = loadImage("images/aliens_feedback_shadow.png");
 
 	}
 
 	public void draw() {
+		
 		image(game_background, 0, 0);
+		
+		Coordinate player1Shadow = gameLogic.getPlayer1().getDrawPos();
+		Coordinate player2Shadow = gameLogic.getPlayer2().getDrawPos();
+		
+		image(humans_feedback_shadow, player1Shadow.getX(), player1Shadow.getY());
+		image(aliens_feedback_shadow, player2Shadow.getX(), player2Shadow.getY());
+		
+		
 	}
 
 	public void mousePressed() {
@@ -85,23 +99,35 @@ public class AlliensVsHumans extends PApplet implements OnMessageListener {
 	// TCP
 	// -------------------------------------
 	@Override
-	public void OnMessage(String msg) {
-		// TODO Auto-generated method stub
-		System.out.println(msg);
-		// tcp.getSession1().sendMessage("Hi back");
+	public void OnMessageP1(String msg) {
+		// TODO Auto-generated method stub	
+		onMessage(msg, Player.PLAYER1);
+	}
 
-		Generic generic = gson.fromJson(msg, Generic.class);
+	@Override
+	public void OnMessageP2(String msg) {
+		// TODO Auto-generated method stub
+		onMessage(msg, Player.PLAYER2);
+	}
+	
+	public void onMessage(String json, int player) {
+		
+		Generic generic = gson.fromJson(json, Generic.class);
 
 		switch (generic.type) {
 		
 			case "Direction":
 				
-				Direction direction = gson.fromJson(msg, Direction.class);
-				gameLogic.playerMove(Player.PLAYER1, direction);
+				Direction direction = gson.fromJson(json, Direction.class);
+				
+				if(player == Player.PLAYER1)
+					gameLogic.playerMove(Player.PLAYER1, direction);
+				else if(player == Player.PLAYER2)
+					gameLogic.playerMove(Player.PLAYER2, direction);
+				
 				
 				break;
 		}
-
 	}
 
 }
