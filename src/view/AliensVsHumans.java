@@ -8,11 +8,16 @@
  */
 package view;
 
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.google.gson.Gson;
 
+import customsThreads.StarThread;
 import events.OnMessageListener;
 import tcpmodel.Direction;
 import tcpmodel.Generic;
+import tcpmodel.Star;
 import model.Coordinate;
 import model.Logic;
 import model.Player;
@@ -22,7 +27,7 @@ import processing.core.PImage;
 /*
  * This is the main class, here is the implementation of the proccesing technology as a tool for drawing the video game
  */
-public class AlliensVsHumans extends PApplet implements OnMessageListener {
+public class AliensVsHumans extends PApplet implements OnMessageListener {
 
 	// -------------------------------------
 	// Attributes
@@ -30,6 +35,11 @@ public class AlliensVsHumans extends PApplet implements OnMessageListener {
 	private TCPLauncher tcp;
 	private Gson gson;
 	private Logic gameLogic;
+	
+	// -------------------------------------
+	// Customs threads
+	// -------------------------------------
+	private StarThread starThread;
 
 	// -------------------------------------
 	// Images
@@ -44,7 +54,7 @@ public class AlliensVsHumans extends PApplet implements OnMessageListener {
 	// -------------------------------------
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		PApplet.main("view.AlliensVsHumans");
+		PApplet.main("view.AliensVsHumans");
 	}
 
 	// -------------------------------------
@@ -68,6 +78,8 @@ public class AlliensVsHumans extends PApplet implements OnMessageListener {
 		game_background = loadImage("images/game_background.png");
 		humans_feedback_shadow = loadImage("images/humans_feedback_shadow.png");
 		aliens_feedback_shadow = loadImage("images/aliens_feedback_shadow.png");
+		
+		starGame();
 
 	}
 
@@ -93,6 +105,36 @@ public class AlliensVsHumans extends PApplet implements OnMessageListener {
 	// -------------------------------------
 	public void updateImages() {
 
+	}
+	
+	public void launchStar(String time) {
+		
+		System.out.println("AliensVsHumans 112: Star! "+time);
+		
+		Star star = new Star(UUID.randomUUID().toString(), "Star that will be catched for a player");
+		String json = gson.toJson(star);
+		
+		int player = ThreadLocalRandom.current().nextInt(0, 1 + 1);
+		if(player == Player.PLAYER1) {
+			
+			tcp.getSession1().sendMessage(json);
+			tcp.getSession2().sendMessage(json);
+			
+		}else if(player == Player.PLAYER2) {
+			
+			tcp.getSession2().sendMessage(json);
+			tcp.getSession1().sendMessage(json);
+			
+		}
+		
+	}
+	
+	public void starGame() {
+		
+		starThread = new StarThread(this);
+		starThread.setDaemon(true);
+		starThread.start();
+		
 	}
 
 	// -------------------------------------
