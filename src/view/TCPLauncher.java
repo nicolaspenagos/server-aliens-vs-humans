@@ -9,10 +9,14 @@
 package view;
 
 import events.OnMessageListener;
+import tcpmodel.PlayerNumber;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.UUID;
+
+import com.google.gson.Gson;
 
 /*
  * In this class you will find the TCP sockets Launcher using Singleton and Observer patterns.
@@ -29,6 +33,7 @@ public class TCPLauncher extends Thread{
 	private Session session1;
 	private Session session2;
 	private boolean killThread;
+	private Gson gson;
 	
 	// -------------------------------------
     // Constructor 
@@ -71,6 +76,11 @@ public class TCPLauncher extends Thread{
 					session.setObserver(observer);
 					session.start();
 					
+					PlayerNumber playerNumber = new PlayerNumber(UUID.randomUUID().toString(), 0, "The player number");
+					
+					String json = gson.toJson(playerNumber);
+					session.sendMessage(json);
+					
 				}else if(session2 == null) {
 					
 					session = new Session(socket, 2);
@@ -78,7 +88,14 @@ public class TCPLauncher extends Thread{
 					session.setObserver(observer);
 					session.start();
 					
+					PlayerNumber playerNumber = new PlayerNumber(UUID.randomUUID().toString(), 1, "The player number");
+					String json = gson.toJson(playerNumber);
+					
+					session.sendMessage(json);
+					
 				}
+				
+				
 			
 			}
 			

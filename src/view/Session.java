@@ -16,7 +16,10 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.UUID;
 
+import com.google.gson.Gson;
+
 import events.OnMessageListener;
+import tcpmodel.PlayerNumber;
 
 /*
  * This class represents a player's session,one for each player.
@@ -30,17 +33,19 @@ public class Session extends Thread{
 	private BufferedWriter writer;
 	private Socket socket;
 	private OnMessageListener observer;
+	private PlayerNumber playerNumber;
 	private boolean killThread;
 	private int sessionNumber;
 
 	// -------------------------------------
 	// Constructor
 	// -------------------------------------
-	public Session(Socket socket, int sessionNumber) {
+	public Session(Socket socket, int sessionNumber, PlayerNumber playerNumber) {
 
 		this.socket = socket;
 		this.ID = UUID.randomUUID().toString();
 		this.setSessionNumber(sessionNumber);
+		this.playerNumber = playerNumber;
 		
 	}
 	
@@ -55,6 +60,15 @@ public class Session extends Thread{
 			
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			
+			Gson gson = new Gson();
+			
+			if(sessionNumber == 1) {
+				observer.OnMessageP1(gson.toJson(playerNumber));
+			}else if(sessionNumber == 2) {
+				observer.OnMessageP2(gson.toJson(playerNumber));
+			}
+			
 			
 			while(!killThread) {
 				
@@ -143,6 +157,14 @@ public class Session extends Thread{
 
 	public void setSessionNumber(int sessionNumber) {
 		this.sessionNumber = sessionNumber;
+	}
+
+	public PlayerNumber getPlayerNumber() {
+		return playerNumber;
+	}
+
+	public void setPlayerNumber(PlayerNumber playerNumber) {
+		this.playerNumber = playerNumber;
 	}
 
 }

@@ -35,6 +35,8 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 	private TCPLauncher tcp;
 	private Gson gson;
 	private Logic gameLogic;
+	private int playerCounter;
+	private boolean startGame;
 	
 	// -------------------------------------
 	// Customs threads
@@ -67,11 +69,14 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 	public void setup() {
 
 		gameLogic = new Logic();
+		
+		playerCounter = 0;
+		startGame = false;
 
 		tcp = TCPLauncher.getInstance();
 		tcp.setObserver(this);
 		tcp.start();
-
+		
 		gson = new Gson();
 
 		// Load images
@@ -85,15 +90,18 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 
 	public void draw() {
 		
-		image(game_background, 0, 0);
-		
-		Coordinate player1Shadow = gameLogic.getPlayer1().getDrawPos();
-		Coordinate player2Shadow = gameLogic.getPlayer2().getDrawPos();
-		
-		image(humans_feedback_shadow, player1Shadow.getX(), player1Shadow.getY());
-		image(aliens_feedback_shadow, player2Shadow.getX(), player2Shadow.getY());
-		
-		
+		if(startGame) {
+			
+			image(game_background, 0, 0);
+			
+			Coordinate player1Shadow = gameLogic.getPlayer1().getDrawPos();
+			Coordinate player2Shadow = gameLogic.getPlayer2().getDrawPos();
+			
+			image(humans_feedback_shadow, player1Shadow.getX(), player1Shadow.getY());
+			image(aliens_feedback_shadow, player2Shadow.getX(), player2Shadow.getY());
+			
+		}
+			
 	}
 
 	public void mousePressed() {
@@ -167,8 +175,20 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 				else if(player == Player.PLAYER2)
 					gameLogic.playerMove(Player.PLAYER2, direction);
 				
+				break;
+				
+			case "PlayerNumber":
+				
+				playerCounter++;
+				
+				if(playerCounter == 2)
+					startGame = true;
+				
+				
+				
 				
 				break;
+				
 		}
 	}
 
