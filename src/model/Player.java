@@ -29,6 +29,7 @@ public class Player {
 	private int maxI;
 	private int minJ;
 	private int maxJ;
+	private int stars;
 
 	private Coordinate currentPos;
 	private Coordinate drawPos;
@@ -39,6 +40,7 @@ public class Player {
 	public Player(int playerNumber) {
 
 		this.playerNumber = playerNumber;
+		this.stars = 0;
 		
 		this.minI = 0;
 		this.maxI = 4;
@@ -141,6 +143,10 @@ public class Player {
 		
 	}
 
+	public void addStar() {
+		this.stars += stars + 50;
+	}
+	
 	// -------------------------------------
 	// Getters and setters
 	// -------------------------------------
@@ -198,6 +204,14 @@ public class Player {
 
 	public void setDrawPos(Coordinate drawPos) {
 		this.drawPos = drawPos;
+	}
+
+	public int getStars() {
+		return stars;
+	}
+
+	public void setStars(int stars) {
+		this.stars = stars;
 	}
 
 }

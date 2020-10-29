@@ -88,6 +88,16 @@ public class Logic {
 		
 	}
 	
+	public void addStars(int i) {
+		
+		if(i == Player.PLAYER1) {
+			player1.addStar();
+		}else if(i == Player.PLAYER2) {
+			player2.addStar();
+		}
+		
+	}
+	
 	// -------------------------------------
 	// Getters and setters
 	// -------------------------------------

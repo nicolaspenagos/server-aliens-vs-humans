@@ -37,6 +37,7 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 	private Logic gameLogic;
 	private int playerCounter;
 	private boolean startGame;
+	private boolean isStarCatched;
 	
 	// -------------------------------------
 	// Customs threads
@@ -84,8 +85,6 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		humans_feedback_shadow = loadImage("images/humans_feedback_shadow.png");
 		aliens_feedback_shadow = loadImage("images/aliens_feedback_shadow.png");
 		
-		starGame();
-
 	}
 
 	public void draw() {
@@ -120,24 +119,27 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		System.out.println("AliensVsHumans 112: Star! "+time);
 		
 		Star star = new Star(UUID.randomUUID().toString(), "Star that will be catched for a player");
+		star.setOwner(3);
 		String json = gson.toJson(star);
 		
 		int player = ThreadLocalRandom.current().nextInt(0, 1 + 1);
+		isStarCatched = false;
+		
 		if(player == Player.PLAYER1) {
 			
 			tcp.getSession1().sendMessage(json);
-			tcp.getSession2().sendMessage(json);
+			//tcp.getSession2().sendMessage(json);
 			
 		}else if(player == Player.PLAYER2) {
 			
-			tcp.getSession2().sendMessage(json);
+			//tcp.getSession2().sendMessage(json);
 			tcp.getSession1().sendMessage(json);
 			
 		}
 		
 	}
 	
-	public void starGame() {
+	public void startGame() {
 		
 		starThread = new StarThread(this);
 		starThread.setDaemon(true);
@@ -181,11 +183,25 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 				
 				playerCounter++;
 				
-				if(playerCounter == 2)
+				if(playerCounter == 1) {
 					startGame = true;
+					startGame();
+				}
 				
 				
 				
+				break;
+				
+			case "Star":
+				
+				Star star = gson.fromJson(json, Star.class);
+				
+				if(!isStarCatched) {
+					
+					isStarCatched = true;
+					gameLogic.addStars(star.getOwner());
+		
+				}
 				
 				break;
 				

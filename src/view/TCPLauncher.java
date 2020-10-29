@@ -63,6 +63,7 @@ public class TCPLauncher extends Thread{
 			
 			killThread = false;
 			serverSocket = new ServerSocket(5000);
+			gson = new Gson();
 			
 			while(!killThread) {
 				
@@ -71,26 +72,25 @@ public class TCPLauncher extends Thread{
 				
 				if(session1 == null) {
 					
-					session = new Session(socket, 1);
+					PlayerNumber playerNumber = new PlayerNumber(UUID.randomUUID().toString(), 0, "The player number");
+					session = new Session(socket, 1, playerNumber);
 					session1 = session;
 					session.setObserver(observer);
 					session.start();
-					
-					PlayerNumber playerNumber = new PlayerNumber(UUID.randomUUID().toString(), 0, "The player number");
 					
 					String json = gson.toJson(playerNumber);
 					session.sendMessage(json);
 					
 				}else if(session2 == null) {
 					
-					session = new Session(socket, 2);
+					PlayerNumber playerNumber = new PlayerNumber(UUID.randomUUID().toString(), 1, "The player number");
+					
+					session = new Session(socket, 2, playerNumber);
 					session2 = session;
 					session.setObserver(observer);
 					session.start();
 					
-					PlayerNumber playerNumber = new PlayerNumber(UUID.randomUUID().toString(), 1, "The player number");
 					String json = gson.toJson(playerNumber);
-					
 					session.sendMessage(json);
 					
 				}

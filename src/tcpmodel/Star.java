@@ -21,7 +21,7 @@ public class Star {
 	// Atributtes
 	// -------------------------------------
 	private String id;
-	private Player owner;
+	private int owner;
 	private String description;
 	
 	// -------------------------------------
@@ -49,11 +49,11 @@ public class Star {
 		this.id = id;
 	}
 	
-	public Player getOwner() {
+	public int getOwner() {
 		return owner;
 	}
 	
-	public void setOwner(Player owner) {
+	public void setOwner(int owner) {
 		this.owner = owner;
 	}
 	
