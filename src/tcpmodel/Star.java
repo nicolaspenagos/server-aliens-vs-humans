@@ -18,6 +18,11 @@ public class Star {
 	private String type = "Star";
 	
 	// -------------------------------------
+	// Constants 
+	// -------------------------------------
+	public final static int OWNED_STAR = -1;
+	
+	// -------------------------------------
 	// Atributtes
 	// -------------------------------------
 	private String id;

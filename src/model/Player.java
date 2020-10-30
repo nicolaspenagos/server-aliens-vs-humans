@@ -144,7 +144,8 @@ public class Player {
 	}
 
 	public void addStar() {
-		this.stars += stars + 50;
+		this.stars += 50;
+		System.out.println("Player 148:      Player"+playerNumber + "    stars: "+stars);
 	}
 	
 	// -------------------------------------
