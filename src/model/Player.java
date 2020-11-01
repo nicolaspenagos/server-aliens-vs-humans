@@ -30,6 +30,7 @@ public class Player {
 	private int minJ;
 	private int maxJ;
 	private int stars;
+	private int currentCharacter;
 
 	private Coordinate currentPos;
 	private Coordinate drawPos;
@@ -140,11 +141,23 @@ public class Player {
 		
 		currentPos.setX(x);
 		currentPos.setY(y);
-		
+	
 	}
 
 	public void addStar() {
 		this.stars += 50;
+	}
+	
+	public boolean putCharacter() {
+		
+		int tempStars = stars - Character.getPrice(currentCharacter);
+		
+		if(tempStars>-1) {
+			stars = tempStars;
+			return true;
+		}else 
+			return false;
+		
 	}
 	
 	// -------------------------------------
@@ -212,6 +225,14 @@ public class Player {
 
 	public void setStars(int stars) {
 		this.stars = stars;
+	}
+
+	public int getCurrentCharacter() {
+		return currentCharacter;
+	}
+
+	public void setCurrentCharacter(int currentCharacter) {
+		this.currentCharacter = currentCharacter;
 	}
 
 }

@@ -57,6 +57,9 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 	private PImage humans_walker_feedback;
 	private PImage human_shooter_feedback;
 	private PImage human_bomb_feedback;
+	private PImage alien_walker_feedback;
+	private PImage alien_shooter_feedback;
+	private PImage alien_bomb_feedback;
 	private PImage aliens_feedback_shadow;
 	private PImage player1;
 	private PImage player2;
@@ -158,6 +161,9 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		human_bomb_feedback = loadImage("images/human_bomb_feedback.png");
 		humans_feedback_shadow = loadImage("images/humans_feedback_shadow.png");
 		aliens_feedback_shadow = loadImage("images/aliens_feedback_shadow.png");
+		alien_walker_feedback = loadImage("images/alien_walker_feedback.png");;
+		alien_shooter_feedback = loadImage("images/alien_shooter_feedback.png");;
+		alien_bomb_feedback = loadImage("images/alien_bomb_feedback.png");;
 
 	}
 
@@ -167,29 +173,26 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 
 		case Character.HUMAN_WALKER_PRESSED:
 			humans_feedback_shadow = humans_walker_feedback;
-
 			break;
 
 		case Character.HUMAN_SHOOTER_PRESSED:
 			humans_feedback_shadow = human_shooter_feedback;
-
 			break;
-
+			
 		case Character.HUMAN_BOMB_PRESSED:
 			humans_feedback_shadow = human_bomb_feedback;
 
 			break;
-			
 		case Character.ALIEN_WALKER_PRESSED:
-			
+			aliens_feedback_shadow = alien_walker_feedback;
 			break;
 
 		case Character.ALIEN_SHOOTER_PRESSED:
-
+			aliens_feedback_shadow = alien_shooter_feedback;
 			break;
 
 		case Character.ALIEN_BOMB_PRESSED:
-
+			aliens_feedback_shadow = alien_bomb_feedback;
 			break;
 			
 		}
@@ -197,8 +200,6 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 	}
 
 	public void launchStar(String time) {
-
-		System.out.println("AliensVsHumans 112: Star! " + time);
 
 		Star star = new Star(UUID.randomUUID().toString(), "Star that will be catched for a player");
 		star.setOwner(3);
@@ -331,6 +332,18 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 			currentCharacter = character.getPressed();
 			feedbackImageManager();
 
+			if(currentCharacter<3) {
+				
+				gameLogic.getPlayer1().setCurrentCharacter(character.getPressed());
+				gameLogic.putCharacter(Player.PLAYER1);
+				
+			}else {
+				
+				gameLogic.getPlayer2().setCurrentCharacter(character.getPressed());
+				gameLogic.putCharacter(Player.PLAYER1);
+				
+			}
+			
 			break;
 
 		}

@@ -11,6 +11,7 @@ package model;
 import java.util.ArrayList;
 
 import tcpmodel.Direction;
+import model.Character;
 
 /*
  * This class represents all the logic of the videogame
@@ -98,6 +99,21 @@ public class Logic {
 		
 	}
 	
+	public void putCharacter(int player) {
+		
+		boolean put;
+		
+		if(player == Player.PLAYER1) 
+			put = player1.putCharacter();
+		else if(player == Player.PLAYER2) 
+			put = player2.putCharacter();
+		else
+			put = false;
+		
+		//Character character = new Character(player1);fjnsdlknfnasdfjkadsnfjdsnfjnafjnsjdnfjshfgewaifghuewhfjdsabvljkasbvas
+
+	}
+		
 	// -------------------------------------
 	// Getters and setters
 	// -------------------------------------
