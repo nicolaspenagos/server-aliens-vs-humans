@@ -51,6 +51,9 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 	private boolean isStarCatched;
 	private int animationCounter;
 	private int currentCharacter;
+	private boolean instructions;
+	private int introPosX;
+	private int introPosY;
 
 	// -------------------------------------
 	// Customs threads
@@ -121,6 +124,7 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		playerCounter = 0;
 		startGame = false;
 		animationCounter = 0;
+		instructions = false;
 
 		tcp = TCPLauncher.getInstance();
 		tcp.setObserver(this);
@@ -135,16 +139,21 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		player1 = loadImage("images/player1.png");
 		player2 = loadImage("images/player2.png");
 
-		animationArray = new PImage[4];
+		introPosX=405;
+		introPosY=426;
+		
+		animationArray = new PImage[5];
 		animationArray[0] = loadImage("images/lets_connect.png");
 		animationArray[1] = loadImage("images/start_battle_3.png");
 		animationArray[2] = loadImage("images/start_battle_2.png");
 		animationArray[3] = loadImage("images/start_battle_1.png");
+		animationArray[4] = loadImage("images/instructions.png");
+		
 
 	}
 
 	public void draw() {
-
+		
 		if (startGame) {
 
 			image(game_background, 0, 0);
@@ -212,10 +221,15 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		} else {
 
 			image(intro_background, 0, 0);
-			image(animationArray[animationCounter], 405, 426);
-			image(player1, 433, 480);
-			image(player2, 593, 480);
-
+			image(animationArray[animationCounter], introPosX, introPosY);
+			
+			if(!instructions) {
+				
+				image(player1, 433, 480);
+				image(player2, 593, 480);
+				
+			}
+	
 		}
 
 	}
@@ -448,13 +462,25 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 						() -> {
 
 							int i = 0;
-							while (i < 4) {
+							while (i < 5) {
 
 								try {
 
 									animationCounter = i;
+									
+									
+									if(animationCounter==4) {
+										introPosX = 0;
+										introPosY = 0;
+										instructions = true;
+										Thread.sleep(6000);
+										
+									}
 									Thread.sleep(1000);
+									
 									i++;
+								
+									
 
 								} catch (InterruptedException e) {
 									// TODO Auto-generated catch block
