@@ -8,6 +8,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /*
  * This class will represent any infantry unit of both human and alien.
  */
@@ -28,6 +30,7 @@ public class Walker extends GameCharacter {
 	// -------------------------------------
 	private char direction;
 	private int damage;
+	private int p;
 
 	// -------------------------------------
 	// Constructor
@@ -38,10 +41,12 @@ public class Walker extends GameCharacter {
 
 	public Walker(int player, int posX, int posY, boolean movement, String image, int lives, int sprite, int isAlive,
 			int cost, char direction, int damage) {
-
+	
 		super(player, posX, posY, movement, image, lives, sprite, isAlive, cost);
+		System.out.println("djnaksdjaksldjlas "+player);
 		this.direction = direction;
 		this.damage = damage;
+		this.p =player;
 		
 		super.updateDrawPos();
 
@@ -59,11 +64,11 @@ public class Walker extends GameCharacter {
 				() -> {
 
 					while (super.state == GameCharacter.ALIVE) {
-						
+						System.out.println("p: "+ p);
 						int i = super.posY;
 						int j = super.posX;
 
-						if (super.player == Player.PLAYER1)
+						if (p == Player.PLAYER1)
 							super.image = HUMAN_WALKER_SPRITE_1;
 						else
 							super.image = ALIEN_WALKER_SPRITE_1;
@@ -78,11 +83,11 @@ public class Walker extends GameCharacter {
 
 					
 
-						int mov = (player == Player.PLAYER1) ? 1 : -1;
+						int mov = (p == Player.PLAYER1) ? 1 : -1;
 
 						if (gameBoard[i][j + mov] != -1) {
 
-							if (player == Player.PLAYER1) {
+							if (p == Player.PLAYER1) {
 
 								if (j + mov < Logic.MATRIX_COLUMN_SIZE) {
 
@@ -111,10 +116,10 @@ public class Walker extends GameCharacter {
 
 								}
 
-							} else if (player == Player.PLAYER2) {
-
+							} else if (p == Player.PLAYER2) {
+							
 								if (j + mov >= 0) {
-									
+								
 									Coordinate temp0DrawPos = Logic.fromMatrixToCoordinate(j, i);
 									j = j + mov;
 									Coordinate temp1DrawPos = Logic.fromMatrixToCoordinate(j, i);
@@ -159,7 +164,7 @@ public class Walker extends GameCharacter {
 	}
 
 	@Override
-	public void collision() {
+	public void collision(ArrayList<GameElement> characters) {
 		// TODO Auto-generated method stub
 
 	}

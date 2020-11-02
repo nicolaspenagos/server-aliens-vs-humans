@@ -8,6 +8,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /*
  * This class will represents any drawable item on the screen.
  */
@@ -22,7 +24,7 @@ public abstract class GameElement {
 	private int drawPosY;
 	protected boolean movement;
 	protected String image;
-	private int player;
+	protected int player;
 
 	// -------------------------------------
 	// Constructor
@@ -38,6 +40,7 @@ public abstract class GameElement {
 		this.posY = posY;
 		this.movement = movement;
 		this.image = image;
+	
 		
 	}
 	
@@ -53,7 +56,7 @@ public abstract class GameElement {
 	// -------------------------------------
 	public abstract void move(int[][] gameBoard);
 	
-	public abstract void collision();
+	public abstract void collision(ArrayList<GameElement> characters);
 
 	// -------------------------------------
 	// Getters and setters

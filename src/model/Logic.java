@@ -31,7 +31,7 @@ public class Logic {
 	// -------------------------------------
 	// Attributes
 	// -------------------------------------
-	private ArrayList<GameElement> gameElements;
+	private ArrayList<GameElement> gameCharacters;
 	private int[][] gameBoard;
 	private Player player1;
 	private Player player2;
@@ -41,11 +41,11 @@ public class Logic {
 	// -------------------------------------
 	public Logic() {
 		
-		gameElements = new ArrayList<GameElement>();
+		gameCharacters = new ArrayList<GameElement>();
 		gameBoard = new int[5][9];
 		
 		player1 = new Player(Player.PLAYER1);
-		setPlayer2(new Player(Player.PLAYER2));
+		player2 = new Player(Player.PLAYER2);
 				
 	}
 
@@ -54,8 +54,8 @@ public class Logic {
 	// -------------------------------------
 	public void moveGameElements() {
 		
-		for(int i=0; i<gameElements.size(); i++) {
-			gameElements.get(i).move(gameBoard);
+		for(int i=0; i<gameCharacters.size(); i++) {
+			gameCharacters.get(i).move(gameBoard);
 		}
 		
 	}
@@ -123,9 +123,60 @@ public class Logic {
 		
 		if(put) {
 			
-			GameElement gameCharacter = new Walker(player, player1.getCurrentPos().getX(), player1.getCurrentPos().getY(), true, Walker.HUMAN_WALKER_SPRITE_1, 5, 0, GameCharacter.ALIVE, 100, 'R', 1);
-			gameElements.add(gameCharacter);
-			gameCharacter.move(gameBoard);
+			GameElement gameCharacter;
+			
+			
+			if(player == Player.PLAYER1) {
+				
+				if(player1.getCurrentCharacter()==GameCharacter.HUMAN_WALKER) {
+					gameCharacter = new Walker(player, player1.getCurrentPos().getX(), player1.getCurrentPos().getY(), true, Walker.HUMAN_WALKER_SPRITE_1, 5, 0, GameCharacter.ALIVE, 100, 'R', 1);
+					gameCharacters.add(gameCharacter);
+					gameCharacter.move(gameBoard);
+				}
+				
+				if(player1.getCurrentCharacter()==GameCharacter.HUMAN_SHOOTER) {
+					gameCharacter = new Shooter(player, player1.getCurrentPos().getX(), player1.getCurrentPos().getY(), true, Shooter.HUMAN_SHOOTER_SPRITE_1, 5, 0, GameCharacter.ALIVE, 100, 'R', 500, gameCharacters);
+					gameCharacters.add(gameCharacter);
+					//Shooter s = (Shooter) gameCharacter;
+					//gameCharacters.add(s.getBullet());
+				}
+				
+				if(player1.getCurrentCharacter() == GameCharacter.HUMAN_BOMB) {
+					//int player, int posX, int posY, boolean movement, String image, int lives, int sprite, int isAlive, int cost, int blastRadius
+					System.out.println();
+					gameCharacter = new Bomb(player,player1.getCurrentPos().getX(), player1.getCurrentPos().getY(), false, Bomb.HUMAN_BOMB_SPRITE_1, 5, 0, GameCharacter.ALIVE, 50, 1, gameCharacters);
+					gameCharacters.add(gameCharacter);
+				}
+				
+				
+				
+			}else{
+				
+				if(player2.getCurrentCharacter()==GameCharacter.ALIEN_WALKER) {
+					
+					gameCharacter = new Walker(player, player2.getCurrentPos().getX(), player2.getCurrentPos().getY(), true, Walker.ALIEN_WALKER_SPRITE_1, 5, 0, GameCharacter.ALIVE, 100, 'L', 1);
+					gameCharacters.add(gameCharacter);
+					gameCharacter.move(gameBoard);
+					
+				}
+				
+				if(player2.getCurrentCharacter()==GameCharacter.ALIEN_SHOOTER) {
+					gameCharacter = new Shooter(player, player2.getCurrentPos().getX(), player2.getCurrentPos().getY(), true, Shooter.ALIEN_SHOOTER_SPRITE_1, 5, 0, GameCharacter.ALIVE, 100, 'L', 500,  gameCharacters);
+					gameCharacters.add(gameCharacter);
+				}
+				
+				if(player2.getCurrentCharacter() == GameCharacter.ALIEN_BOMB) {
+					//int player, int posX, int posY, boolean movement, String image, int lives, int sprite, int isAlive, int cost, int blastRadius
+					System.out.println();
+					gameCharacter = new Bomb(player,player2.getCurrentPos().getX(), player2.getCurrentPos().getY(), false, Bomb.ALIEN_BOMB_SPRITE_1, 5, 0, GameCharacter.ALIVE, 50, 1 ,gameCharacters);
+					gameCharacters.add(gameCharacter);
+				}
+				
+				
+			}
+				
+			
+			
 			
 		}
 	
@@ -135,11 +186,11 @@ public class Logic {
 	// Getters and setters
 	// -------------------------------------
 	public ArrayList<GameElement> getItemsToDraw() {
-		return gameElements;
+		return gameCharacters;
 	}
 
 	public void setItemsToDraw(ArrayList<GameElement> gameElements) {
-		this.gameElements = gameElements;
+		this.gameCharacters = gameElements;
 	}
 
 	public Player getPlayer1() {

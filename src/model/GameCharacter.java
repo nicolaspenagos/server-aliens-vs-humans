@@ -53,7 +53,7 @@ public abstract class GameCharacter extends GameElement{
 	public GameCharacter(int player, int posX, int posY, boolean movement, String image, int lives, int sprite, int isAlive, int cost) {
 		
 		super(player, posX, posY, movement, image);
-		
+	
 		this.lives = lives;
 		this.sprite = sprite;
 		this.isAlive = isAlive;
