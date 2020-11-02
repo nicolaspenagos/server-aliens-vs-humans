@@ -11,7 +11,7 @@ package model;
 import java.util.ArrayList;
 
 import tcpmodel.Direction;
-import model.Character;
+import model.GameCharacter;
 
 /*
  * This class represents all the logic of the videogame
@@ -24,6 +24,9 @@ public class Logic {
 	public final static int MATRIX_SQUARE_SIZE = 73;
 	public final static int COLUMN_GAP = 10;
 	public final static int ROW_GAP = 16;
+	public final static int LEFT_LIMIT = 0;
+	public final static int MATRIX_ROW_SIZE = 5;
+	public final static int MATRIX_COLUMN_SIZE = 9;
 	
 	// -------------------------------------
 	// Attributes
@@ -49,7 +52,15 @@ public class Logic {
 	// -------------------------------------
 	// Methods
 	// -------------------------------------
-	public Coordinate fromMatrixToCoordinate(int j, int i) {
+	public void moveGameElements() {
+		
+		for(int i=0; i<gameElements.size(); i++) {
+			gameElements.get(i).move(gameBoard);
+		}
+		
+	}
+	
+	public static Coordinate fromMatrixToCoordinate(int j, int i) {
 		
 		int x = 229 + (j*MATRIX_SQUARE_SIZE) + (j*COLUMN_GAP);
 		int y = 179 + (i*MATRIX_SQUARE_SIZE) + (i*ROW_GAP);
@@ -110,8 +121,14 @@ public class Logic {
 		else
 			put = false;
 		
-		//Character character = new Character(player1);fjnsdlknfnasdfjkadsnfjdsnfjnafjnsjdnfjshfgewaifghuewhfjdsabvljkasbvas
-
+		if(put) {
+			
+			GameElement gameCharacter = new Walker(player, player1.getCurrentPos().getX(), player1.getCurrentPos().getY(), true, Walker.HUMAN_WALKER_SPRITE_1, 5, 0, GameCharacter.ALIVE, 100, 'R', 1);
+			gameElements.add(gameCharacter);
+			gameCharacter.move(gameBoard);
+			
+		}
+	
 	}
 		
 	// -------------------------------------

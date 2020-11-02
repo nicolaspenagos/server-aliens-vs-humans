@@ -11,7 +11,20 @@ package model;
 /*
  * This class represents any explosive element of the game
  */
-public class Bomb extends Character{
+public class Bomb extends GameCharacter{
+	
+	// -------------------------------------
+    // Constants
+    // -------------------------------------
+	public final static String HUMAN_BOMB_SPRITE_1 = "hbs1";
+	public final static String HUMAN_BOMB_SPRITE_2 = "hbs2";
+	public final static String HUMAN_BOMB_SPRITE_3 = "hbs3";
+	public final static String ALIEN_BOMB_SPRITE_1 = "abs1";
+	public final static String ALIEN_BOMB_SPRITE_2 = "abs2";
+	public final static String ALIEN_BOMB_SPRITE_3 = "abs3";
+	public final static String BOMB_SPRITE_4 = "bs4";
+	public final static String BOMB_SPRITE_5 = "bs5";
+	public final static String BOMB_SPRITE_6 = "bs6";
 	
 	// -------------------------------------
 	// Attributes
@@ -25,9 +38,9 @@ public class Bomb extends Character{
 		
 	}
 	
-	public Bomb(int posX, int posY, boolean movement, String image, int lives, int sprite, boolean isAlive, int cost, int blastRadius) {
+	public Bomb(int player, int posX, int posY, boolean movement, String image, int lives, int sprite, int isAlive, int cost, int blastRadius) {
 		
-		super(posX, posY, movement, image, lives, sprite, isAlive, cost);
+		super(player, posX, posY, movement, image, lives, sprite, isAlive, cost);
 		
 	}
 	
@@ -41,7 +54,7 @@ public class Bomb extends Character{
 	}
 
 	@Override
-	public void move() {
+	public void move(int[][] gameBoard) {
 		// TODO Auto-generated method stub
 		
 	}

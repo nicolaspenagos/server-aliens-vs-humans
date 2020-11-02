@@ -16,10 +16,13 @@ public abstract class GameElement {
 	// -------------------------------------
 	// Attributes
 	// -------------------------------------
-	private int posX;
-	private int posY;
-	private boolean movement;
-	private String image;
+	protected int posX;
+	protected int posY;
+	private int drawPosX;
+	private int drawPosY;
+	protected boolean movement;
+	protected String image;
+	private int player;
 
 	// -------------------------------------
 	// Constructor
@@ -28,8 +31,9 @@ public abstract class GameElement {
 
 	}
 
-	public GameElement(int posX, int posY, boolean movement, String image) {
+	public GameElement(int player, int posX, int posY, boolean movement, String image) {
 		
+		this.player = player;
 		this.posX = posX;
 		this.posY = posY;
 		this.movement = movement;
@@ -37,10 +41,17 @@ public abstract class GameElement {
 		
 	}
 	
+	public void updateDrawPos() {
+		
+		Coordinate coord = Logic.fromMatrixToCoordinate(posX, posY);
+		drawPosX = coord.getX();
+		drawPosY = coord.getY();
+		
+	}
 	// -------------------------------------
 	// Methods
 	// -------------------------------------
-	public abstract void move();
+	public abstract void move(int[][] gameBoard);
 	
 	public abstract void collision();
 
@@ -77,6 +88,30 @@ public abstract class GameElement {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public int getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(int player) {
+		this.player = player;
+	}
+
+	public int getDrawPosX() {
+		return drawPosX;
+	}
+
+	public void setDrawPosX(int drawPosX) {
+		this.drawPosX = drawPosX;
+	}
+
+	public int getDrawPosY() {
+		return drawPosY;
+	}
+
+	public void setDrawPosY(int drawPosY) {
+		this.drawPosY = drawPosY;
 	}
 
 }

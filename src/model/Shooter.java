@@ -11,7 +11,13 @@ package model;
 /*
  * This class will represent any artillery unit of both human and alien.
  */
-public class Shooter extends Character{
+public class Shooter extends GameCharacter{
+	
+	// -------------------------------------
+    // Constants
+    // -------------------------------------
+	public final static String HUMAN_WALKER_SPRITE_1 = "hss1";
+	public final static String ALIEN_WALKER_SPRITE_1 = "ass1";
 
 	// -------------------------------------
 	// Attributes
@@ -26,9 +32,9 @@ public class Shooter extends Character{
 		
 	}
 	
-	public Shooter(int posX, int posY, boolean movement, String image, int lives, int sprite, boolean isAlive, int cost, char direction, int rateOfFire) {
+	public Shooter(int player, int posX, int posY, boolean movement, String image, int lives, int sprite, int isAlive, int cost, char direction, int rateOfFire) {
 		
-		super(posX, posY, movement, image, lives, sprite, isAlive, cost);
+		super(player, posX, posY, movement, image, lives, sprite, isAlive, cost);
 		this.direction = direction;
 		this.rateOfFire = rateOfFire;
 		
@@ -44,7 +50,7 @@ public class Shooter extends Character{
 	}
 
 	@Override
-	public void move() {
+	public void move(int[][] gameBoard) {
 		// TODO Auto-generated method stub
 		
 	}

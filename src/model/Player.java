@@ -30,6 +30,7 @@ public class Player {
 	private int minJ;
 	private int maxJ;
 	private int stars;
+	private int score;
 	private int currentCharacter;
 
 	private Coordinate currentPos;
@@ -61,6 +62,8 @@ public class Player {
 			this.drawPos = new Coordinate(871, 513);
 
 		}
+		
+		this.score = 0;
 
 	}
 
@@ -141,6 +144,8 @@ public class Player {
 		
 		currentPos.setX(x);
 		currentPos.setY(y);
+		
+		System.out.println(currentPos.getX()+" "+currentPos.getY());
 	
 	}
 
@@ -150,7 +155,7 @@ public class Player {
 	
 	public boolean putCharacter() {
 		
-		int tempStars = stars - Character.getPrice(currentCharacter);
+		int tempStars = stars - GameCharacter.getPrice(currentCharacter);
 		
 		if(tempStars>-1) {
 			stars = tempStars;
@@ -233,6 +238,14 @@ public class Player {
 
 	public void setCurrentCharacter(int currentCharacter) {
 		this.currentCharacter = currentCharacter;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 }

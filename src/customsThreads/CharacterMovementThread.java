@@ -8,14 +8,12 @@
  */
 package customsThreads;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 import view.AliensVsHumans;
 
 /*
- * This class is used to generate random stars that will be sent to users.
+ * This class is used to movements all game elements on the screen.
  */
-public class StarThread extends Thread{
+public class CharacterMovementThread extends Thread{
 	
 	// -------------------------------------
 	// Attributes
@@ -26,8 +24,8 @@ public class StarThread extends Thread{
 	// -------------------------------------
 	// Constructor
 	// -------------------------------------
-	public StarThread(AliensVsHumans aliensVsHumans) {
-		this.aliensVsHumans = aliensVsHumans;
+	public CharacterMovementThread() {
+		
 	}
 	
 	// -------------------------------------
@@ -35,17 +33,13 @@ public class StarThread extends Thread{
 	// -------------------------------------
 	public void run() {
 		
-		killThread = false;
-		while(!killThread) {
+		setKillThread(false);
+		while(!isKillThread()) {
 			
 			try {
 				
-				int time = ThreadLocalRandom.current().nextInt(5, 12 + 1);
-				time = time * 1000;
-				
-				sleep(time);
-				aliensVsHumans.launchStar(""+time);
-				
+				getAliensVsHumans().moveGameElements();
+				Thread.sleep(300);
 				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -53,18 +47,18 @@ public class StarThread extends Thread{
 			}
 			
 		}
-			
+		
 	}
 
 	// -------------------------------------
 	// Getters and setters
 	// -------------------------------------
-	public AliensVsHumans getServerVsHumans() {
+	public AliensVsHumans getAliensVsHumans() {
 		return aliensVsHumans;
 	}
 
-	public void setServerVsHumans(AliensVsHumans serverVsHumans) {
-		this.aliensVsHumans = serverVsHumans;
+	public void setAliensVsHumans(AliensVsHumans aliensVsHumans) {
+		this.aliensVsHumans = aliensVsHumans;
 	}
 
 	public boolean isKillThread() {
@@ -74,5 +68,5 @@ public class StarThread extends Thread{
 	public void setKillThread(boolean killThread) {
 		this.killThread = killThread;
 	}
-
+	
 }

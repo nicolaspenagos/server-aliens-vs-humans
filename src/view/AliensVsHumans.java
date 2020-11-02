@@ -17,11 +17,17 @@ import customsThreads.StarThread;
 import events.OnMessageListener;
 import tcpmodel.Direction;
 import tcpmodel.Generic;
+import tcpmodel.Put;
 import tcpmodel.Star;
 import tcpmodel.Character;
+import model.Bomb;
 import model.Coordinate;
+import model.GameCharacter;
+import model.GameElement;
 import model.Logic;
 import model.Player;
+import model.Shooter;
+import model.Walker;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PFont;
@@ -63,6 +69,24 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 	private PImage aliens_feedback_shadow;
 	private PImage player1;
 	private PImage player2;
+	private PImage human_walker_sprite1;
+	private PImage human_walker_sprite2;
+	private PImage human_walker_sprite3;
+	private PImage alien_walker_sprite1;
+	private PImage alien_walker_sprite2;
+	private PImage alien_walker_sprite3;
+	private PImage human_bomb_sprite1;
+	private PImage human_bomb_sprite2;
+	private PImage human_bomb_sprite3;
+	private PImage alien_bomb_sprite1;
+	private PImage alien_bomb_sprite2;
+	private PImage alien_bomb_sprite3;
+	private PImage bomb_sprite4;
+	private PImage bomb_sprite5;
+	private PImage bomb_sprite6;
+	private PImage human_shooter_sprite;
+	private PImage alien_shooter_sprite;
+
 	private PImage[] animationArray;
 
 	// -------------------------------------
@@ -127,8 +151,44 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 			image(aliens_feedback_shadow, player2Shadow.getX(), player2Shadow.getY());
 
 			textFont(englebert);
-			text("" + gameLogic.getPlayer1().getStars(), 130, 92);
-			text("" + gameLogic.getPlayer2().getStars(), 290, 92);
+			text("" + gameLogic.getPlayer1().getStars(), 130, 91);
+			text("" + gameLogic.getPlayer1().getScore(), 284, 91);
+			text("" + gameLogic.getPlayer2().getStars(), 1068, 91);
+			text("" + gameLogic.getPlayer2().getScore(), 895, 91);
+
+			for (int i = 0; i < gameLogic.getItemsToDraw().size(); i++) {
+
+				GameElement current = gameLogic.getItemsToDraw().get(i);
+				
+				if(current instanceof GameCharacter) {
+					
+					GameCharacter currentGameCharacter = (GameCharacter) current;
+					
+					if(currentGameCharacter.getState() == GameCharacter.EMPTY || currentGameCharacter.getState() == GameCharacter.GONE || currentGameCharacter.getState() == GameCharacter.KILLED) {
+						
+						gameLogic.getItemsToDraw().remove(i);
+						int currentPlayer = currentGameCharacter.getPlayer();
+						
+						if(currentGameCharacter.getState()==GameCharacter.GONE) {
+							if(currentPlayer == Player.PLAYER1)
+								gameLogic.getPlayer1().setScore(gameLogic.getPlayer1().getScore()+10);
+							else if(currentPlayer == Player.PLAYER2)
+								gameLogic.getPlayer2().setScore(gameLogic.getPlayer2().getScore()+10);
+						}
+						
+					}else {
+						String image = current.getImage();
+						
+						PImage currentImage = getImage(image);
+						image(currentImage, current.getDrawPosX(), current.getDrawPosY());
+					
+					
+					}
+				}
+				
+				
+
+			}
 
 		} else {
 
@@ -148,9 +208,11 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 	// -------------------------------------
 	// Methods
 	// -------------------------------------
+	public void moveGameElements() {
+		gameLogic.moveGameElements();
+	}
+
 	public void updateImages() {
-
-
 
 	}
 
@@ -161,9 +223,27 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		human_bomb_feedback = loadImage("images/human_bomb_feedback.png");
 		humans_feedback_shadow = loadImage("images/humans_feedback_shadow.png");
 		aliens_feedback_shadow = loadImage("images/aliens_feedback_shadow.png");
-		alien_walker_feedback = loadImage("images/alien_walker_feedback.png");;
-		alien_shooter_feedback = loadImage("images/alien_shooter_feedback.png");;
-		alien_bomb_feedback = loadImage("images/alien_bomb_feedback.png");;
+		alien_walker_feedback = loadImage("images/alien_walker_feedback.png");
+		alien_shooter_feedback = loadImage("images/alien_shooter_feedback.png");
+		alien_bomb_feedback = loadImage("images/alien_bomb_feedback.png");
+		human_walker_sprite1 = loadImage("images/hws1.png");
+		human_walker_sprite2 = loadImage("images/hws2.png");
+		human_walker_sprite3 = loadImage("images/hws3.png");
+		/*
+		alien_walker_sprite1 = loadImage("images/aws1.png");
+		alien_walker_sprite2 = loadImage("images/aws2.png");
+		alien_walker_sprite3 = loadImage("images/aws3.png");
+		human_bomb_sprite1 = loadImage("images/hbs1.png");
+		human_bomb_sprite2 = loadImage("images/hbs2.png");
+		human_bomb_sprite3 = loadImage("images/hbs3.png");
+		alien_bomb_sprite1 = loadImage("images/abs1.png");
+		alien_bomb_sprite2 = loadImage("images/abs2.png");
+		alien_bomb_sprite3 = loadImage("images/abs3.png");
+		bomb_sprite4 = loadImage("images/bs4.png");
+		bomb_sprite5 = loadImage("images/bs5.png");
+		bomb_sprite6 = loadImage("images/bs6.png");
+		human_shooter_sprite = loadImage("images/hss1.png");
+		alien_shooter_sprite = loadImage("images/ass1.png");*/
 
 	}
 
@@ -178,7 +258,7 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		case Character.HUMAN_SHOOTER_PRESSED:
 			humans_feedback_shadow = human_shooter_feedback;
 			break;
-			
+
 		case Character.HUMAN_BOMB_PRESSED:
 			humans_feedback_shadow = human_bomb_feedback;
 
@@ -194,9 +274,9 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		case Character.ALIEN_BOMB_PRESSED:
 			aliens_feedback_shadow = alien_bomb_feedback;
 			break;
-			
+
 		}
-		
+
 	}
 
 	public void launchStar(String time) {
@@ -227,6 +307,68 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		starThread = new StarThread(this);
 		starThread.setDaemon(true);
 		starThread.start();
+
+	}
+
+	public PImage getImage(String image) {
+
+		switch (image) {
+
+		case Walker.HUMAN_WALKER_SPRITE_1:
+			return human_walker_sprite1;
+
+		case Walker.HUMAN_WALKER_SPRITE_2:
+			return human_walker_sprite2;
+
+		case Walker.HUMAN_WALKER_SPRITE_3:
+			return human_walker_sprite3;
+
+		/*
+		case Walker.ALIEN_WALKER_SPRITE_1:
+			return alien_walker_sprite1;
+
+		case Walker.ALIEN_WALKER_SPRITE_2:
+			return alien_walker_sprite2;
+
+		case Walker.ALIEN_WALKER_SPRITE_3:
+			return alien_walker_sprite3;
+
+		case Bomb.HUMAN_BOMB_SPRITE_1:
+			return human_bomb_sprite1;
+
+		case Bomb.HUMAN_BOMB_SPRITE_2:
+			return human_bomb_sprite2;
+
+		case Bomb.HUMAN_BOMB_SPRITE_3:
+			return human_bomb_sprite3;
+			
+		case Bomb.ALIEN_BOMB_SPRITE_1:
+			return alien_bomb_sprite1;
+
+		case Bomb.ALIEN_BOMB_SPRITE_2:
+			return alien_bomb_sprite2;
+
+		case Bomb.ALIEN_BOMB_SPRITE_3:
+			return alien_bomb_sprite3;
+			
+		case Bomb.BOMB_SPRITE_4:
+			return bomb_sprite4;
+			
+		case Bomb.BOMB_SPRITE_5:
+			return bomb_sprite5;
+			
+		case Bomb.BOMB_SPRITE_6:
+			return bomb_sprite6;
+			
+		case Shooter.HUMAN_WALKER_SPRITE_1:
+			return human_shooter_sprite;
+			
+		case Shooter.ALIEN_WALKER_SPRITE_1:
+			return alien_shooter_sprite;
+*/
+		}
+
+		return null;
 
 	}
 
@@ -332,18 +474,23 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 			currentCharacter = character.getPressed();
 			feedbackImageManager();
 
-			if(currentCharacter<3) {
-				
+			if (currentCharacter < 3) {
 				gameLogic.getPlayer1().setCurrentCharacter(character.getPressed());
-				gameLogic.putCharacter(Player.PLAYER1);
-				
-			}else {
-				
+				// gameLogic.putCharacter(Player.PLAYER1);
+			} else {
 				gameLogic.getPlayer2().setCurrentCharacter(character.getPressed());
-				gameLogic.putCharacter(Player.PLAYER1);
-				
+				// gameLogic.putCharacter(Player.PLAYER1);
 			}
-			
+
+			break;
+
+		case "Put":
+
+			if (player == Player.PLAYER1)
+				gameLogic.putCharacter(Player.PLAYER1);
+			else if (player == Player.PLAYER2)
+				gameLogic.putCharacter(Player.PLAYER2);
+
 			break;
 
 		}
