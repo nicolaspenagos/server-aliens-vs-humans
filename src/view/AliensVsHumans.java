@@ -20,6 +20,7 @@ import events.OnMessageListener;
 import tcpmodel.Direction;
 import tcpmodel.Generic;
 import tcpmodel.Put;
+import tcpmodel.Score;
 import tcpmodel.Star;
 import tcpmodel.Character;
 import model.Bomb;
@@ -31,6 +32,7 @@ import model.Logic;
 import model.Player;
 import model.Shooter;
 import model.Walker;
+import model.Chronometer;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PFont;
@@ -54,6 +56,7 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 	private boolean instructions;
 	private int introPosX;
 	private int introPosY;
+	private Chronometer timer;
 
 	// -------------------------------------
 	// Customs threads
@@ -94,6 +97,10 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 	private PImage bomb_sprite6;
 	private PImage human_shooter_sprite;
 	private PImage alien_shooter_sprite;
+	private PImage p1Winner;
+	private PImage p2Winner;
+	private PImage tie;
+
 
 	private PImage[] animationArray;
 
@@ -169,6 +176,8 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 			text("" + gameLogic.getPlayer1().getScore(), 284, 91);
 			text("" + gameLogic.getPlayer2().getStars(), 1068, 91);
 			text("" + gameLogic.getPlayer2().getScore(), 895, 91);
+			
+			text(timer.getTime(), 560, 91);
 
 			for (int i = 0; i < gameLogic.getItemsToDraw().size(); i++) {
 
@@ -184,10 +193,21 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 						int currentPlayer = currentGameCharacter.getPlayer();
 						
 						if(currentGameCharacter.getState()==GameCharacter.GONE) {
-							if(currentPlayer == Player.PLAYER1)
+							
+							if(currentPlayer == Player.PLAYER1) {
+								
 								gameLogic.getPlayer1().setScore(gameLogic.getPlayer1().getScore()+10);
-							else if(currentPlayer == Player.PLAYER2)
+								Score score = new Score(UUID.randomUUID().toString(), gameLogic.getPlayer1().getScore(), "The score of palyer 1");
+								tcp.getSession1().sendMessage(gson.toJson(score));
+								
+							}else if(currentPlayer == Player.PLAYER2) {
+								
 								gameLogic.getPlayer2().setScore(gameLogic.getPlayer2().getScore()+10);
+								Score score = new Score(UUID.randomUUID().toString(), gameLogic.getPlayer2().getScore(), "The score of palyer 2");
+								tcp.getSession2().sendMessage(gson.toJson(score));
+								
+							}
+							
 						}
 						
 					}else {
@@ -230,6 +250,18 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 				
 			}
 	
+		}
+		
+		if(startGame== true &&timer.isFinished()) {
+			
+			if(gameLogic.getPlayer1().getScore()>gameLogic.getPlayer2().getScore()) {
+				image(p1Winner, 0, 0);
+			}else if(gameLogic.getPlayer1().getScore()<gameLogic.getPlayer2().getScore()) {
+				image(p2Winner, 0, 0);
+			}else {
+				image(tie, 0, 0);
+			}
+			
 		}
 
 	}
@@ -278,7 +310,10 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		bomb_sprite4 = loadImage("images/bs4.png");
 		bomb_sprite5 = loadImage("images/bs5.png");
 		bomb_sprite6 = loadImage("images/bs6.png");
-		
+		p1Winner = loadImage("images/p1_won.png");
+		p2Winner = loadImage("images/p2_won.png");
+		tie = loadImage("images/tie.png");
+	
 	}
 
 	public void feedbackImageManager() {
@@ -343,6 +378,7 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 		starThread = new StarThread(this);
 		starThread.setDaemon(true);
 		starThread.start();
+		timer = new Chronometer();
 
 	}
 
@@ -467,21 +503,19 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 								try {
 
 									animationCounter = i;
-									
-									
+								
 									if(animationCounter==4) {
+										
 										introPosX = 0;
 										introPosY = 0;
 										instructions = true;
 										Thread.sleep(6000);
 										
 									}
-									Thread.sleep(1000);
 									
+									Thread.sleep(1000);	
 									i++;
 								
-									
-
 								} catch (InterruptedException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
