@@ -145,8 +145,6 @@ public class Player {
 		currentPos.setX(x);
 		currentPos.setY(y);
 		
-		System.out.println(currentPos.getX()+" "+currentPos.getY());
-	
 	}
 
 	public void addStar() {

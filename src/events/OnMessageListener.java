@@ -8,6 +8,9 @@
  */
 package events;
 
+/*
+ * This interface is used to represents the events of the observer pattern.
+ */
 public interface OnMessageListener {
 
 	public void OnMessageP1(String msg);

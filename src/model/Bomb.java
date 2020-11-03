@@ -103,11 +103,11 @@ public class Bomb extends GameCharacter {
 								}
 
 							} else {
-								System.out.println("hHola");
+								
 								if (characters.get(i).getImage().equals(Walker.HUMAN_WALKER_SPRITE_1)
 										|| characters.get(i).getImage().equals(Walker.HUMAN_WALKER_SPRITE_2)
 										|| characters.get(i).getImage().equals(Walker.HUMAN_WALKER_SPRITE_3)) {
-									System.out.println("hHola1");
+								
 									double dist = Math.sqrt(((super.getDrawPosX() - characters.get(i).getDrawPosX())
 											* (super.getDrawPosX() - characters.get(i).getDrawPosX()))
 											+ ((super.getDrawPosY() - characters.get(i).getDrawPosY())

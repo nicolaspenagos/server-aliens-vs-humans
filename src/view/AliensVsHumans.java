@@ -216,7 +216,7 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 						PImage currentImage = getImage(image);
 						
 						if(image.equals(Shooter.HUMAN_SHOOTER_SPRITE_1) ||image.equals(Shooter.ALIEN_SHOOTER_SPRITE_1) ) {
-							System.out.println("Holaaaaaa");
+							
 							image(currentImage, current.getDrawPosX(), current.getDrawPosY());
 							Shooter shooter = (Shooter) current;
 							Bullet b = shooter.getBullet();
@@ -264,10 +264,6 @@ public class AliensVsHumans extends PApplet implements OnMessageListener {
 			
 		}
 
-	}
-
-	public void mousePressed() {
-		System.out.println(mouseX + "  " + mouseY);
 	}
 
 	// -------------------------------------

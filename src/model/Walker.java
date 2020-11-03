@@ -43,7 +43,6 @@ public class Walker extends GameCharacter {
 			int cost, char direction, int damage) {
 	
 		super(player, posX, posY, movement, image, lives, sprite, isAlive, cost);
-		System.out.println("djnaksdjaksldjlas "+player);
 		this.direction = direction;
 		this.damage = damage;
 		this.p =player;
@@ -64,7 +63,7 @@ public class Walker extends GameCharacter {
 				() -> {
 
 					while (super.state == GameCharacter.ALIVE) {
-						System.out.println("p: "+ p);
+					
 						int i = super.posY;
 						int j = super.posX;
 
@@ -147,9 +146,7 @@ public class Walker extends GameCharacter {
 
 							}
 
-						} else {
-							// ATACKKKK
-						}
+						} 
 
 					}
 

@@ -137,13 +137,9 @@ public class Logic {
 				if(player1.getCurrentCharacter()==GameCharacter.HUMAN_SHOOTER) {
 					gameCharacter = new Shooter(player, player1.getCurrentPos().getX(), player1.getCurrentPos().getY(), true, Shooter.HUMAN_SHOOTER_SPRITE_1, 5, 0, GameCharacter.ALIVE, 100, 'R', 500, gameCharacters);
 					gameCharacters.add(gameCharacter);
-					//Shooter s = (Shooter) gameCharacter;
-					//gameCharacters.add(s.getBullet());
 				}
 				
 				if(player1.getCurrentCharacter() == GameCharacter.HUMAN_BOMB) {
-					//int player, int posX, int posY, boolean movement, String image, int lives, int sprite, int isAlive, int cost, int blastRadius
-					System.out.println();
 					gameCharacter = new Bomb(player,player1.getCurrentPos().getX(), player1.getCurrentPos().getY(), false, Bomb.HUMAN_BOMB_SPRITE_1, 5, 0, GameCharacter.ALIVE, 50, 1, gameCharacters);
 					gameCharacters.add(gameCharacter);
 				}
@@ -166,8 +162,7 @@ public class Logic {
 				}
 				
 				if(player2.getCurrentCharacter() == GameCharacter.ALIEN_BOMB) {
-					//int player, int posX, int posY, boolean movement, String image, int lives, int sprite, int isAlive, int cost, int blastRadius
-					System.out.println();
+					
 					gameCharacter = new Bomb(player,player2.getCurrentPos().getX(), player2.getCurrentPos().getY(), false, Bomb.ALIEN_BOMB_SPRITE_1, 5, 0, GameCharacter.ALIVE, 50, 1 ,gameCharacters);
 					gameCharacters.add(gameCharacter);
 				}
